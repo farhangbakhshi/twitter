@@ -65,7 +65,5 @@ class DatabaseHandler:
 
 
     def query(self, table_name, key_name, value):
-        self.db_cursor.execute(
-            "SELECT * FROM users WHERE username = :value", {"value": value}
-        )
+        self.db_cursor.execute(f"SELECT * FROM {table_name} WHERE {key_name} = {value}")
         return self.db_cursor.fetchall()

@@ -1,4 +1,3 @@
-import hashlib
 
 class User:
     id = None
@@ -9,8 +8,7 @@ class User:
 
     def __init__(self, username, password, name, bio):
         self.username = username
-        encoded_password = password.encode()
-        self.password = hashlib.sha256(encoded_password).hexdigest()
+        self.password = password
         self.name = name
         self.bio = bio
         
