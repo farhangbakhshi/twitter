@@ -26,8 +26,9 @@ class DatabaseHandler:
             """
             CREATE TABLE IF NOT EXISTS tweets(
                 id INTEGER PRIMARY KEY,
-                author_id text,
-                txt text
+                FOREIGN KEY(author_id) REFERENCES user(id),
+                txt text,
+                FOREIGN KEY(replying_to) REFERENCES tweets(id)
             )
             """
         )
