@@ -22,8 +22,8 @@ login.add_argument("--password", type=str, required=True)
 login.add_argument('--tweet', type=str, required=False)
 login.add_argument('--search-by-user', type=str, required=False)
 login.add_argument('--search-by-tweet', type=str, required=False)
-login.add_argument('--follow-by-username', action='store_true', required=False)
-login.add_argument('--unfollow-by-username', action='store_true', required=False)
+login.add_argument('--follow-by-username', type=str, required=False)
+login.add_argument('--unfollow-by-username', type=str, required=False)
 login.add_argument('--show-home', action='store_true', required=False)
 
 
