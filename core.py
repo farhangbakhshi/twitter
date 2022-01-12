@@ -45,3 +45,6 @@ class Core:
         else:
             return None
         
+
+    def new_tweet(self, author_id, text):
+        return self.database_handler.new_tweet(author_id, text)

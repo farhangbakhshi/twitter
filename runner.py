@@ -43,5 +43,10 @@ if args.command == "login":
     user = twitter_core.check_login(args.username, args.password)
     if user:
         print("Logged in successfully.")
+        if args.tweet:
+            if twitter_core.new_tweet(user.id, args.tweet):
+                print("Successfully tweeted!")
+            else:
+                print("Tweet failed.")
     else:
         print("Login failed.")

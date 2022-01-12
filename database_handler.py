@@ -1,6 +1,6 @@
 import sqlite3
 from sqlite3 import Error
-
+import time
 
 class DatabaseHandler:
     db_conn = None
@@ -14,10 +14,10 @@ class DatabaseHandler:
             """
             CREATE TABLE IF NOT EXISTS users(
                 id INTEGER PRIMARY KEY,
-                username text UNIQUE,
-                password text,
-                name text,
-                bio text
+                username TEXT UNIQUE,
+                password TEXT,
+                name TEXT,
+                bio TEXT
             )
             """
         )
@@ -29,6 +29,7 @@ class DatabaseHandler:
                 author_id INTEGER,
                 replying_to INTEGER,
                 txt TEXT,
+                time REAL,
                 FOREIGN KEY (author_id) REFERENCES user(id),
                 FOREIGN KEY (replying_to) REFERENCES tweets(id)
             )
@@ -58,11 +59,29 @@ class DatabaseHandler:
                     "password": password,
                     "name": name,
                     "bio": bio,
-                },
+                }
             )
             self.db_conn.commit()
             return True
         except Error:
+            return False
+    
+    def new_tweet(self, author_id, text):
+        try:
+            self.db_cursor.execute(
+                """INSERT INTO tweets VALUES (:id, :author_id, :replying_to, :txt, :time)""",
+                {
+                    "id": None,
+                    "author_id": author_id,
+                    "replying_to": None,
+                    "txt": text,
+                    "time": time.time()
+                }
+            )
+            self.db_conn.commit()
+            return True
+        except Error:
+            print(Error)
             return False
 
 

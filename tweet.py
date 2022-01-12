@@ -5,3 +5,4 @@ class Tweet:
     author_id = None
     text = None
     replying_to = None
+    time:float = None
