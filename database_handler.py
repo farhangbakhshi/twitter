@@ -84,8 +84,10 @@ class DatabaseHandler:
             print(Error)
             return False
 
-
-
     def query(self, table_name, key_name, value):
         self.db_cursor.execute(f"SELECT * FROM {table_name} WHERE {key_name} = {value}")
+        return self.db_cursor.fetchall()
+
+    def search_usernames(self, s_phrase):
+        self.db_cursor.execute(f"SELECT id,username,name,bio FROM users WHERE username LIKE '%{s_phrase}%'")
         return self.db_cursor.fetchall()

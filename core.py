@@ -44,7 +44,9 @@ class Core:
             return user
         else:
             return None
-        
 
     def new_tweet(self, author_id, text):
         return self.database_handler.new_tweet(author_id, text)
+
+    def search_by_user(self, s_phrase):
+        return self.database_handler.search_usernames(s_phrase)

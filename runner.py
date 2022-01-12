@@ -43,10 +43,21 @@ if args.command == "login":
     user = twitter_core.check_login(args.username, args.password)
     if user:
         print("Logged in successfully.")
+        #tweet
         if args.tweet:
             if twitter_core.new_tweet(user.id, args.tweet):
                 print("Successfully tweeted!")
             else:
                 print("Tweet failed.")
+        #search by user
+        if args.search_by_user:
+            result_list = twitter_core.search_by_user(args.search_by_user)
+            for x in range(len(result_list)):
+                print(x + 1)
+                print(result_list[x][2])
+                print("@" + result_list[x][1])
+                print("bio: " + str(result_list[x][3]))
+                print("--------------------------------------------------------------------------------")
+            
     else:
         print("Login failed.")
