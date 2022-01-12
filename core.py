@@ -15,6 +15,19 @@ class Core:
 
 
     def new_user(self, username, password, name, bio):
+        for x in username:
+            if ord(x) > 64 and ord(x) < 91:
+                continue
+            elif ord(x) > 96 and ord(x) < 123:
+                continue
+            elif ord(x) > 47 and ord(x) < 58:
+                continue
+            elif ord(x) == 95:
+                continue
+            else:
+                print("the username can only contain english letters, numbers, and underline.")
+                return False
+        
         encoded_password = password.encode()
         password = hashlib.sha256(encoded_password).hexdigest()
         return self.database_handler.save_new_user(username, password, name, bio)
