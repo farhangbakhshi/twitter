@@ -36,6 +36,17 @@ class DatabaseHandler:
             """
         )
 
+        self.db_cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS follows(
+                follower_id INTEGER,
+                followee_id INTEGER,
+                FOREIGN KEY (follower_id) REFERENCES user(id),
+                FOREIGN KEY (followee_id) REFERENCES user(id)
+            )
+            """
+        )
+
         self.db_conn.commit()
     
     def make_conn(self):
@@ -95,3 +106,15 @@ class DatabaseHandler:
     def search_tweets(self, s_phrase):
         self.db_cursor.execute(f"SELECT author_id,txt,time FROM tweets WHERE txt LIKE '%{s_phrase}%'")
         return self.db_cursor.fetchall()
+
+    def follow_by_username(self, follower, followee):
+        try:
+            self.db_cursor.execute(
+                "INSERT INTO follows VALUES (:follower_id, :followee_id)",
+                {"follower_id": follower, "followee_id": followee}
+            )
+            self.db_conn.commit()
+            return True
+        except Error:
+            print(Error)
+            return False

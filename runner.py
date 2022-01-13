@@ -23,7 +23,7 @@ login.add_argument("--password", type=str, required=True)
 login.add_argument('--tweet', type=str, required=False)
 login.add_argument('--search-by-user', type=str, required=False)
 login.add_argument('--search-by-tweet', type=str, required=False)
-login.add_argument('--follow-by-username', type=str, required=False)
+login.add_argument('--follow', type=str, required=False)
 login.add_argument('--unfollow-by-username', type=str, required=False)
 login.add_argument('--show-home', action='store_true', required=False)
 
@@ -68,6 +68,12 @@ if args.command == "login":
                 print(result_list[x][1])
                 print(time.ctime(result_list[x][2]))
                 print("--------------------------------------------------------------------------------")
+        #follow by username
+        if args.follow:
+            if twitter_core.follow_by_username(user.id, args.follow):
+                print("Followed successfully!")
+            else:
+                print("Failed to follow.")
 
             
     else:

@@ -57,3 +57,12 @@ class Core:
             result_list[x] = list(result_list[x])
             result_list[x][0] = self.database_handler.query("users", "id", result_list[x][0])[0][1]
         return result_list
+
+    def follow_by_username(self, follower_id, followee_username):
+        result = self.database_handler.query("users", "username", f"'{followee_username}'")
+        if result:
+            followee_id = result[0][0]
+        else:
+            print("No such user found.")
+            return False
+        return self.database_handler.follow_by_username(follower_id, followee_id)
