@@ -1,5 +1,6 @@
 from database_handler import DatabaseHandler
 from core import Core
+import time
 
 #-----------------------------------------------------------------------------------------------------
 import argparse
@@ -54,10 +55,20 @@ if args.command == "login":
             result_list = twitter_core.search_by_user(args.search_by_user)
             for x in range(len(result_list)):
                 print(x + 1)
-                print(result_list[x][2])
-                print("@" + result_list[x][1])
-                print("bio: " + str(result_list[x][3]))
+                print(result_list[x][1])
+                print("@" + result_list[x][0])
+                print("bio: " + str(result_list[x][2]))
                 print("--------------------------------------------------------------------------------")
+        #search by tweet
+        if args.search_by_tweet:
+            result_list = twitter_core.search_by_tweet(args.search_by_tweet)
+            for x in range(len(result_list)):
+                print(x + 1)
+                print("@" + result_list[x][0])
+                print(result_list[x][1])
+                print(time.ctime(result_list[x][2]))
+                print("--------------------------------------------------------------------------------")
+
             
     else:
         print("Login failed.")

@@ -50,3 +50,10 @@ class Core:
 
     def search_by_user(self, s_phrase):
         return self.database_handler.search_usernames(s_phrase)
+
+    def search_by_tweet(self, s_phrase):
+        result_list = self.database_handler.search_tweets(s_phrase)
+        for x in range(len(result_list)):
+            result_list[x] = list(result_list[x])
+            result_list[x][0] = self.database_handler.query("users", "id", result_list[x][0])[0][1]
+        return result_list

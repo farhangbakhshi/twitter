@@ -89,5 +89,9 @@ class DatabaseHandler:
         return self.db_cursor.fetchall()
 
     def search_usernames(self, s_phrase):
-        self.db_cursor.execute(f"SELECT id,username,name,bio FROM users WHERE username LIKE '%{s_phrase}%'")
+        self.db_cursor.execute(f"SELECT username,name,bio FROM users WHERE username LIKE '%{s_phrase}%'")
+        return self.db_cursor.fetchall()
+
+    def search_tweets(self, s_phrase):
+        self.db_cursor.execute(f"SELECT author_id,txt,time FROM tweets WHERE txt LIKE '%{s_phrase}%'")
         return self.db_cursor.fetchall()
