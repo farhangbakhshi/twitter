@@ -39,6 +39,7 @@ class DatabaseHandler:
         self.db_cursor.execute(
             """
             CREATE TABLE IF NOT EXISTS follows(
+                id INTEGER PRIMARY KEY,
                 follower_id INTEGER,
                 followee_id INTEGER,
                 FOREIGN KEY (follower_id) REFERENCES user(id),
@@ -110,9 +111,18 @@ class DatabaseHandler:
     def follow_by_username(self, follower, followee):
         try:
             self.db_cursor.execute(
-                "INSERT INTO follows VALUES (:follower_id, :followee_id)",
-                {"follower_id": follower, "followee_id": followee}
+                "INSERT INTO follows VALUES (:id, :follower_id, :followee_id)",
+                {"id": None, "follower_id": follower, "followee_id": followee}
             )
+            self.db_conn.commit()
+            return True
+        except Error:
+            print(Error)
+            return False
+
+    def unfollow_by_username(self, unfollower_id, unfollowee_id):
+        try:
+            self.db_cursor.execute(f"DELETE FROM follows WHERE follower_id = {unfollower_id} AND followee_id = {unfollowee_id}")
             self.db_conn.commit()
             return True
         except Error:

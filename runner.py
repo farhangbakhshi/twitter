@@ -24,7 +24,7 @@ login.add_argument('--tweet', type=str, required=False)
 login.add_argument('--search-by-user', type=str, required=False)
 login.add_argument('--search-by-tweet', type=str, required=False)
 login.add_argument('--follow', type=str, required=False)
-login.add_argument('--unfollow-by-username', type=str, required=False)
+login.add_argument('--unfollow', type=str, required=False)
 login.add_argument('--show-home', action='store_true', required=False)
 
 
@@ -74,7 +74,12 @@ if args.command == "login":
                 print("Followed successfully!")
             else:
                 print("Failed to follow.")
-
+        #unfollow by username
+        if args.unfollow:
+            if twitter_core.unfollow_by_username(user.id, args.unfollow):
+                print("Unfollowed successfully!")
+            else:
+                print("Failed to unfollow.")
             
     else:
         print("Login failed.")

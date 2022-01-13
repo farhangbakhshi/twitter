@@ -1,3 +1,4 @@
+from ctypes import resize
 import hashlib
 from user import User
 from database_handler import DatabaseHandler
@@ -66,3 +67,12 @@ class Core:
             print("No such user found.")
             return False
         return self.database_handler.follow_by_username(follower_id, followee_id)
+
+    def unfollow_by_username(self, unfollower_id, unfollowee_username):
+        result = self.database_handler.query("users", "username", f"'{unfollowee_username}'")
+        if result:
+            unfollowee_id = result[0][0]
+        else:
+            print("No such user found.")
+            return False
+        return self.database_handler.unfollow_by_username(unfollower_id, unfollowee_id)
