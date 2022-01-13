@@ -2,6 +2,7 @@ import sqlite3
 from sqlite3 import Error
 import time
 
+
 class DatabaseHandler:
     db_conn = None
     db_cursor = None
@@ -49,7 +50,7 @@ class DatabaseHandler:
         )
 
         self.db_conn.commit()
-    
+
     def make_conn(self):
         try:
             conn = sqlite3.connect("database.db")
@@ -71,13 +72,13 @@ class DatabaseHandler:
                     "password": password,
                     "name": name,
                     "bio": bio,
-                }
+                },
             )
             self.db_conn.commit()
             return True
         except Error:
             return False
-    
+
     def new_tweet(self, author_id, text):
         try:
             self.db_cursor.execute(
@@ -87,8 +88,8 @@ class DatabaseHandler:
                     "author_id": author_id,
                     "replying_to": None,
                     "txt": text,
-                    "time": time.time()
-                }
+                    "time": time.time(),
+                },
             )
             self.db_conn.commit()
             return True
@@ -101,18 +102,22 @@ class DatabaseHandler:
         return self.db_cursor.fetchall()
 
     def search_usernames(self, s_phrase):
-        self.db_cursor.execute(f"SELECT username,name,bio FROM users WHERE username LIKE '%{s_phrase}%'")
+        self.db_cursor.execute(
+            f"SELECT username,name,bio FROM users WHERE username LIKE '%{s_phrase}%'"
+        )
         return self.db_cursor.fetchall()
 
     def search_tweets(self, s_phrase):
-        self.db_cursor.execute(f"SELECT author_id,txt,time FROM tweets WHERE txt LIKE '%{s_phrase}%'")
+        self.db_cursor.execute(
+            f"SELECT author_id,txt,time FROM tweets WHERE txt LIKE '%{s_phrase}%'"
+        )
         return self.db_cursor.fetchall()
 
     def follow_by_username(self, follower, followee):
         try:
             self.db_cursor.execute(
                 "INSERT INTO follows VALUES (:id, :follower_id, :followee_id)",
-                {"id": None, "follower_id": follower, "followee_id": followee}
+                {"id": None, "follower_id": follower, "followee_id": followee},
             )
             self.db_conn.commit()
             return True
@@ -122,7 +127,9 @@ class DatabaseHandler:
 
     def unfollow_by_username(self, unfollower_id, unfollowee_id):
         try:
-            self.db_cursor.execute(f"DELETE FROM follows WHERE follower_id = {unfollower_id} AND followee_id = {unfollowee_id}")
+            self.db_cursor.execute(
+                f"DELETE FROM follows WHERE follower_id = {unfollower_id} AND followee_id = {unfollowee_id}"
+            )
             self.db_conn.commit()
             return True
         except Error:
@@ -130,5 +137,7 @@ class DatabaseHandler:
             return False
 
     def get_last_10_tweets(self, user_id):
-        self.db_cursor.execute(f"SELECT * FROM tweets WHERE author_id = {user_id} LIMIT 10")
+        self.db_cursor.execute(
+            f"SELECT * FROM tweets WHERE author_id = {user_id} LIMIT 10"
+        )
         return self.db_cursor.fetchmany(10)

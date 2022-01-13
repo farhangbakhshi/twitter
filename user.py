@@ -1,4 +1,3 @@
-
 class User:
     id = None
     username = None
@@ -11,4 +10,3 @@ class User:
         self.password = password
         self.name = name
         self.bio = bio
-        
