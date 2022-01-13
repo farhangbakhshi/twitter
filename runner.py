@@ -80,6 +80,16 @@ if args.command == "login":
                 print("Unfollowed successfully!")
             else:
                 print("Failed to unfollow.")
+        #show home
+        if args.show_home:
+            home = twitter_core.get_home(user.id)
+            for x in range(len(home)):
+                print(x + 1)
+                print(home[x][1])
+                print("@" + home[x][0])
+                print(home[x][2])
+                print(time.ctime(home[x][3]))
+                print("--------------------------------------------------------------------------------")
             
     else:
         print("Login failed.")

@@ -128,3 +128,7 @@ class DatabaseHandler:
         except Error:
             print(Error)
             return False
+
+    def get_last_10_tweets(self, user_id):
+        self.db_cursor.execute(f"SELECT * FROM tweets WHERE author_id = {user_id} LIMIT 10")
+        return self.db_cursor.fetchmany(10)

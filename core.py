@@ -1,8 +1,13 @@
-from ctypes import resize
 import hashlib
 from user import User
+from tweet import Tweet
 from database_handler import DatabaseHandler
 
+def key_function(tweet):
+    """
+    this function gets a contact and returns its name to be used in a sort function as the key to sort. SORT IS DONE IN GET_HOME()
+    """
+    return tweet[3]
 
 class Core:
 
@@ -76,3 +81,31 @@ class Core:
             print("No such user found.")
             return False
         return self.database_handler.unfollow_by_username(unfollower_id, unfollowee_id)
+
+    def get_home(self, user_id):
+        #preparing a list of followings by preparing a list of their IDs
+        followings = self.database_handler.query("follows", "follower_id", user_id)
+        for x in range(len(followings)):
+            followings[x] = followings[x][2]
+        #now we get a list of each user's last 10 tweets and then make a list of those lists
+        tweets_list = []
+        for x in followings:
+            tweets_list.append(self.database_handler.get_last_10_tweets(x))
+        #now we turn each of those tuples into a Tweet
+        for x in range(len(tweets_list)):
+            for y in range(len(tweets_list[x])):
+                tweets_list[x][y] = Tweet(tweets_list[x][y][0], tweets_list[x][y][1], tweets_list[x][y][2], tweets_list[x][y][3], tweets_list[x][y][4])
+        #now we prepare this list for home(we have to sort them by time)
+        home = []
+        for x in tweets_list:
+            for y in x:
+                home.append(
+                    [
+                        self.database_handler.query("users", "id", y.author_id)[0][1],
+                        self.database_handler.query("users", "id", y.author_id)[0][3],
+                        y.text,
+                        y.time
+                    ]
+                )
+        home.sort(key=key_function, reverse=True)
+        return home
